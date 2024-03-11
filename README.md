@@ -3,4 +3,5 @@
 ## Projects
 1 0x00-ES6_basics
 2 0x01-ES6_promises
-2 0x02-ES6_classes
+3 0x02-ES6_classes
+4 0x03-ES6_data_manipulation
