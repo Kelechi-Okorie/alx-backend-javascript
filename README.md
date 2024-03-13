@@ -5,3 +5,4 @@
 2 0x01-ES6_promises
 3 0x02-ES6_classes
 4 0x03-ES6_data_manipulation
+5 0x04-TypeScript
