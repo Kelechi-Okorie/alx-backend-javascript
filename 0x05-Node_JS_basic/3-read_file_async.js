@@ -1,44 +1,38 @@
-const fs = require('fs');
+/* Read the number of valid data in the database. */
 
-function countStudents(path) {
+const fs = require('fs').promises;
+
+async function countStudents(path) {
   return new Promise((resolve, reject) => {
-    fs.readFile(path, 'utf-8', (err, data) => {
-      if (err) {
-        // If an error occurs while reading the file, reject the promise with the error
-        reject(new Error('Cannot load the database'));
-        return;
-      }
+    fs.readFile(path, 'utf-8')
+      .then((data) => {
+        const lines = data.toString().split('\n').slice(1, -1);
+        let countTotal = 0;
+        const countFields = {};
+        const lists = {};
+        lines.forEach((line) => {
+          const fields = line.split(',');
+          const field = fields[fields.length - 1].trim();
 
-      // Parse the CSV data using csv-parser
-      const students = [];
-      const fields = {};
-      data.trim().split('\n').forEach((row) => {
-        const [firstName, lastName, age, field] = row.trim().split(',');
-        if (firstName && lastName && age && field) {
-          students.push({ firstName, lastName, age, field });
-          if (!fields[field]) {
-            fields[field] = [];
+          if (!countFields[field]) {
+            countFields[field] = 0;
+            lists[field] = [];
           }
-          fields[field].push(firstName);
+          countTotal += 1;
+          countFields[field] += 1;
+
+          lists[field].push(fields[0].trim());
+        });
+        console.log(`Number of students: ${countTotal}`);
+
+        for (const field in countFields) {
+          if (field) console.log(`Number of students in ${field}: ${countFields[field]}. List: ${lists[field].join(', ')}`);
         }
+        return resolve();
+      })
+      .catch(() => {
+        reject(new Error('Cannot load the database'));
       });
-
-      // Count the number of students
-      const numberOfStudents = students.length;
-
-      // Log the number of students
-      console.log(`Number of students: ${numberOfStudents}`);
-
-      // Count the number of students in each field and log them
-      for (const field in fields) {
-        console.log(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
-      }
-
-      // Resolve the promise with the result
-      resolve();
-    });
   });
-
 }
-
 module.exports = countStudents;
