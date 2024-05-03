@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "test": "mocha",
+    "lint": "./node_modules/.bin/eslint",
+    "lint-all": "./node_modules/.bin/eslint [0-9]*.js",
+    "lint-fix-all": "./node_modules/.bin/eslint --fix [0-9]*.js"
+  },
+  "dependencies": {
+    "eslint": "^9.1.1",
+    "mocha": "^10.4.0"
+  }
+}
